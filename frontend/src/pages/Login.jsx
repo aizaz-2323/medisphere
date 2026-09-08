@@ -53,13 +53,13 @@ function Login() {
 
   return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4 py-8">
-      
+
       {/* Login Card */}
       <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-xl border border-slate-200">
-        
+
         {/* Header */}
         <div className="text-center mb-8">
-          
+
           {/* MediSphere Logo */}
           <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-xl bg-blue-600 text-2xl font-bold text-white shadow-md">
             M
@@ -140,6 +140,29 @@ function Login() {
             className="w-full rounded-lg bg-blue-600 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {loading ? 'Signing in...' : 'Sign In'}
+          </button>
+
+          {/* Google Sign In */}
+          <div className="relative my-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-slate-200"></div>
+            </div>
+
+            <div className="relative flex justify-center text-sm">
+              <span className="bg-white px-3 text-slate-400">
+                OR
+              </span>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => {
+              window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`;
+            }}
+            className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 focus:outline-none focus:ring-4 focus:ring-blue-100"
+          >
+            Sign in with Google
           </button>
         </form>
 

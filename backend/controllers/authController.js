@@ -36,8 +36,6 @@ exports.register = async (req, res) => {
 
 
 // LOGIN
-
-
 exports.login = async (req, res) => {
   const { email, password } = req.body;
 
@@ -111,4 +109,6 @@ exports.login = async (req, res) => {
     });
   }
 };
+
+
 
