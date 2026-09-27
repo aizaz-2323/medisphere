@@ -52,14 +52,19 @@ router.get(
     session: false,
     failureRedirect: '/login-failed',
   }),
-  (req, res) => {
+  async (req, res) => {
     const user = req.user;
+
+    const roleResult = await pool.query(
+      'SELECT name FROM roles WHERE id = $1',
+      [user.role_id]
+    );
 
     const token = jwt.sign(
       {
         id: user.id,
         email: user.email,
-        role: user.role_id,
+        role: roleResult.rows[0].name, // Include the role name in the token payload
       },
       process.env.JWT_SECRET,
       {

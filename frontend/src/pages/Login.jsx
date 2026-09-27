@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import api from '../api/axios';
 
 function Login() {
@@ -11,6 +11,7 @@ function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -34,12 +35,11 @@ function Login() {
       // Store JWT token in browser storage
       localStorage.setItem('token', response.data.token);
 
-      setSuccess('Login successful!');
+      // Store logged-in user information, including role
+      localStorage.setItem('user', JSON.stringify(response.data.user));
 
-      console.log('Logged-in user:', response.data.user);
+      navigate('/dashboard');
 
-      // Remove this later after testing
-      console.log('JWT token:', response.data.token);
     } catch (err) {
       const message =
         err.response?.data?.error ||

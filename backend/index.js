@@ -14,10 +14,12 @@ app.get("/api/health", (req, res) => {
 
 const authRoutes = require('./routes/authRoutes');
 const passport = require('./config/passport');
+const clinicRoutes = require('./routes/clinicRoutes');
 
 app.use(passport.initialize());
 
 app.use('/api/auth', authRoutes);
+app.use('/api', clinicRoutes);
 
 const PORT = process.env.PORT || 5000;
 
