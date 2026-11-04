@@ -50,6 +50,13 @@ function Dashboard() {
               >
                 Set Up Clinic
               </Link>
+
+              <Link
+                to="/clinic-availability"
+                className="block rounded-lg bg-white p-5 shadow border border-slate-200"
+              >
+                View Available Slots
+              </Link>
             </>
           )}
 

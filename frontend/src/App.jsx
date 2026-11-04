@@ -5,6 +5,7 @@ import OAuthSuccess from './pages/OAuthSuccess';
 import Dashboard from './pages/Dashboard';
 import DoctorProfile from './pages/DoctorProfile';
 import ClinicBuilder from './pages/ClinicBuilder';
+import ClinicAvailability from './pages/ClinicAvailability';
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/doctor-profile" element={<DoctorProfile />} />
         <Route path="/clinic-builder" element={<ClinicBuilder />} />
+        <Route path="/clinic-availability" element={<ClinicAvailability />} />
         {/* your other routes will go here later, e.g. /login, /dashboard */}
       </Routes>
     </BrowserRouter>

@@ -5,6 +5,9 @@ const verifyToken = require('../middleware/verifyToken');
 const requireRole = require('../middleware/requireRole');
 const { uploadToS3 } = require('../utils/S3');
 const pool = require('../db');
+const { getAvailableSlots } = require('../utils/availability');
+const DAY_NAMES = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -96,3 +99,55 @@ router.get('/:id', async (req, res) => {
 });
 
 module.exports = router;
+
+// 5. AVAILABILITY: free slots for a clinic on a given date (public)
+router.get('/:id/availability', async (req, res) => {
+  const { date } = req.query; // expects YYYY-MM-DD
+  if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+    return res.status(400).json({ error: 'date query param is required as YYYY-MM-DD' });
+  }
+
+  try {
+    const clinicResult = await pool.query('SELECT * FROM clinics WHERE id = $1', [req.params.id]);
+    if (clinicResult.rows.length === 0) {
+      return res.status(404).json({ error: 'Clinic not found' });
+    }
+    const clinic = clinicResult.rows[0];
+
+    // getUTCDay keeps the weekday correct no matter the server time zone
+    const dayName = DAY_NAMES[new Date(date).getUTCDay()];
+
+    const hours = clinic.working_hours || {};
+    const daySchedule = hours[dayName];
+
+    if (!daySchedule || daySchedule.closed) {
+      return res.json({ date, day: dayName, slots: [] });
+    }
+
+    // Find the doctor linked to this clinic, then their bookings that day
+    const doctorResult = await pool.query('SELECT id FROM doctors WHERE clinic_id = $1', [clinic.id]);
+    const doctorId = doctorResult.rows[0]?.id;
+
+    let bookedTimes = [];
+    if (doctorId) {
+      const bookedResult = await pool.query(
+        `SELECT TO_CHAR(slot_time, 'HH24:MI') AS time FROM appointments
+         WHERE doctor_id = $1 AND slot_time::date = $2 AND status != 'cancelled'`,
+        [doctorId, date]
+      );
+      bookedTimes = bookedResult.rows.map((r) => r.time);
+    }
+
+    const slots = getAvailableSlots({
+      openTime: daySchedule.open,
+      closeTime: daySchedule.close,
+      slotDurationMinutes: clinic.slot_duration_minutes || 30,
+      bookedTimes,
+    });
+
+    res.json({ date, day: dayName, slots });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to compute availability' });
+  }
+});
