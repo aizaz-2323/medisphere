@@ -23,6 +23,7 @@ app.use(passport.initialize());
 app.use('/api/auth', authRoutes);
 app.use('/api', clinicRoutes);
 app.use('/api/doctors', doctorRoutes);
+app.use('/api/clinics', clinicRoutes);
 
 const PORT = process.env.PORT || 5000;
 

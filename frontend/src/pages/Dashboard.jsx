@@ -36,12 +36,21 @@ function Dashboard() {
         <div className="mt-8 space-y-4">
 
           {user.role === 'Doctor' && (
-            <Link
-              to="/clinic-builder"
-              className="block rounded-lg bg-white p-5 shadow border border-slate-200"
-            >
-              Set Up Clinic
-            </Link>
+            <>
+              <Link
+                to="/doctor-profile"
+                className="block rounded-lg bg-white p-5 shadow border border-slate-200"
+              >
+                Complete Your Profile
+              </Link>
+
+              <Link
+                to="/clinic-builder"
+                className="block rounded-lg bg-white p-5 shadow border border-slate-200"
+              >
+                Set Up Clinic
+              </Link>
+            </>
           )}
 
           {user.role === 'Admin' && (

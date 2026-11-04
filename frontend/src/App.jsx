@@ -3,6 +3,8 @@ import Signup from './pages/Signup';
 import Login from './pages/Login';
 import OAuthSuccess from './pages/OAuthSuccess';
 import Dashboard from './pages/Dashboard';
+import DoctorProfile from './pages/DoctorProfile';
+import ClinicBuilder from './pages/ClinicBuilder';
 
 
 function App() {
@@ -13,6 +15,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/oauth-success" element={<OAuthSuccess />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/doctor-profile" element={<DoctorProfile />} />
+        <Route path="/clinic-builder" element={<ClinicBuilder />} />
         {/* your other routes will go here later, e.g. /login, /dashboard */}
       </Routes>
     </BrowserRouter>
