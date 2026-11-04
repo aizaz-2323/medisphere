@@ -1,3 +1,5 @@
+// Step 5: OAuth Social Sign-In:
+//                              sets up Passport.js to handle Google OAuth. It checks if a user already exists in the database based on their Google ID or email. If the user exists, it links their Google ID if they previously signed up with email/password. If the user doesn't exist, it creates a new user with the default role of "Patient". The code also handles errors and exports the configured Passport instance for use in other parts of the application.
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const pool = require('../db');
